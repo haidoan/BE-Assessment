@@ -1,6 +1,9 @@
 const displayResult = (time, destination, travelled) => {
     console.log(`reached destination at the ${time}th second, required / travelled distance = ${destination}/${travelled} meters`)
 }
+const displayGoingResult = (time, destination, travelled) => {
+    console.log(`${time}th second, total travelled distance = ${travelled} meters`)
+}
 
 const calculateRocketTime = () => {
     let destination = Number(process.argv[2])
@@ -13,7 +16,7 @@ const calculateRocketTime = () => {
     if(destination === 1){
         return displayResult(1,destination, 1)
     }
-    // the distance in each minute that rocket travel is fibonaci value in that munite index
+    // the distance in each second that rocket travel is fibonacci value in that second index
     // time(seconds)   0 1 2 3 4 5  6  7   (seconds)
     // fib index       0 1 1 2 3 5  8  13
     // total distance  0 1 2 4 7 12 20 33  (meter)
@@ -21,19 +24,20 @@ const calculateRocketTime = () => {
     let prev = 1
     let next = 1;
     let time = 2
-    let distanceInNextMinute = 0
+    let distanceInNextSecond = 0
     let travelledDistance = prev + next
     while (true) {
         time++
-        // in next minute,travelled distance = the last minute's travelled distance  + the last 2 minutes's travelled distance
-        distanceInNextMinute = prev + next
-        if (travelledDistance + distanceInNextMinute >= destination) {
-            return displayResult(time,destination, travelledDistance + distanceInNextMinute)
+        // in next second,travelled distance = the last second's travelled distance  + the last 2 seconds's travelled distance
+        distanceInNextSecond = prev + next
+        if (travelledDistance + distanceInNextSecond >= destination) {
+            return displayResult(time,destination, travelledDistance + distanceInNextSecond)
         }
-        travelledDistance += distanceInNextMinute
+        displayGoingResult(time,destination, travelledDistance + distanceInNextSecond)
+        travelledDistance += distanceInNextSecond
         const temp = next
         prev = temp
-        next = distanceInNextMinute
+        next = distanceInNextSecond
     }
 }
 
